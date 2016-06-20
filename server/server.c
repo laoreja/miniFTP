@@ -1,8 +1,3 @@
-/* A simple server in the internet domain using TCP
-The port number is passed as an argument 
-This version runs forever, forking off a separate 
-process for each connection
-*/
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
@@ -24,7 +19,7 @@ control connection port: 20001
 data connection port: start from 30000
 */
 
-void control_connection(int, int); /* function prototype */
+void control_connection(int, int); 
 
 int main(int argc, char *argv[])
 {
@@ -94,7 +89,7 @@ void control_connection (int sock, int port_num)
 //	bzero(buffer, BUFF_SIZE);
     strcpy(buffer, "Welcome to laoreja's miniFTP~\n\
 		Supported functions:\n\
-		ls\n\
+		ls dir\n\
 		pwd\n\
 		cd path\n\
 		get filename\n\
@@ -114,8 +109,7 @@ void control_connection (int sock, int port_num)
 			printf("data port num: %d\n", port_num);
 		#endif
 
-		sendMsg(sock, &port_num, sizeof(port_num));
-		
+				
 		sockfd = socket(AF_INET, SOCK_STREAM, 0);
 		if (sockfd < 0) 
 			error("ERROR opening data connection socket");
@@ -126,7 +120,8 @@ void control_connection (int sock, int port_num)
 			error("ERROR on binding");
 		listen(sockfd,3);
 		clilen = sizeof(cli_addr);
-
+		
+		sendMsg(sock, &port_num, sizeof(port_num));
 
 					
 //		newsockfd = accept(sockfd, (struct sockaddr *) &cli_addr, 
@@ -212,6 +207,7 @@ void control_connection (int sock, int port_num)
 						while (1) {
 							bzero(data_buffer, DATA_BUFF_SIZE);
 							n = receiveMsg(newsockfd, data_buffer, DATA_BUFF_SIZE);
+//							printf("receive msg size: %d\n", n);
 							fwrite(data_buffer, sizeof(char), n, fp);
 							if (n < DATA_BUFF_SIZE) {
 								break;

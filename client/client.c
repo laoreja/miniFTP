@@ -30,6 +30,7 @@ void put(int ctrl_sock, int data_sock){
 	while (1) {
 		bzero(data_buffer, DATA_BUFF_SIZE);
 		read_size = fread(data_buffer, sizeof(char), DATA_BUFF_SIZE, fp);
+//		printf("send read_size: %d\n", resad_size);
 		sendMsg(data_sock, data_buffer, read_size);
 		if (read_size < DATA_BUFF_SIZE) {
 			break;
